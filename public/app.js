@@ -450,19 +450,39 @@ document.addEventListener('keydown',event=>{
   }
 });
 let touchStart=null;
-canvas.addEventListener('pointerdown',event=>{
-  if(status!=='running' || event.pointerType==='mouse')return;
-  touchStart={x:event.clientX,y:event.clientY,id:event.pointerId};canvas.setPointerCapture(event.pointerId);
-});
-canvas.addEventListener('pointermove',event=>{
+const swipeSurfaces=[$('board-wrap'),$('swipe-pad')];
+function swipeMove(event) {
   if(!touchStart || event.pointerId!==touchStart.id)return;
+  if(status!=='running' && status!=='countdown'){touchStart=null;return;}
+  if(event.cancelable)event.preventDefault();
   const dx=event.clientX-touchStart.x,dy=event.clientY-touchStart.y;
-  if(Math.max(Math.abs(dx),Math.abs(dy))<13)return;
-  direction(Math.abs(dx)>Math.abs(dy)?(dx>0?0:2):(dy>0?1:3));
+  const ax=Math.abs(dx),ay=Math.abs(dy);
+  if(Math.max(ax,ay)<touchStart.threshold)return;
+  // Require a clear axis: diagonal jitter must not queue two accidental turns.
+  if(Math.max(ax,ay)<Math.min(ax,ay)*1.35)return;
+  const dir=ax>ay?(dx>0?0:2):(dy>0?1:3);
+  if(dir!==touchStart.lastDirection){direction(dir);touchStart.lastDirection=dir;}
   touchStart.x=event.clientX;touchStart.y=event.clientY;
-});
-canvas.addEventListener('pointerup',()=>touchStart=null);
-canvas.addEventListener('pointercancel',()=>touchStart=null);
+}
+for(const surface of swipeSurfaces){
+  surface.addEventListener('pointerdown',event=>{
+    if((status!=='running' && status!=='countdown') || event.pointerType==='mouse' || touchStart)return;
+    if(event.target.closest('button,input,a'))return;
+    if(event.cancelable)event.preventDefault();
+    touchStart={x:event.clientX,y:event.clientY,id:event.pointerId,lastDirection:null,threshold:Math.max(18,Math.min(28,size*.055))};
+    surface.setPointerCapture(event.pointerId);
+    surface.classList.add('swiping');
+  });
+  surface.addEventListener('pointermove',swipeMove);
+  const release=event=>{
+    if(!touchStart || event.pointerId!==touchStart.id)return;
+    if(event.type==='pointerup')swipeMove(event);
+    touchStart=null;surface.classList.remove('swiping');
+  };
+  surface.addEventListener('pointerup',release);
+  surface.addEventListener('pointercancel',release);
+  surface.addEventListener('lostpointercapture',release);
+}
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseGame();else loadRanking();});
 window.addEventListener('blur',pauseGame);
 window.addEventListener('online',()=>{loadRanking();if(pendingSave)saveScore();});

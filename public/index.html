@@ -10,6 +10,7 @@
   <meta property="og:type" content="website">
   <title>Snake Club — só mais uma maçã</title>
   <link rel="icon" type="image/svg+xml" href="/icon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/styles.css">
   <script type="module" src="/app.js"></script>
@@ -21,8 +22,10 @@
       <nav aria-label="Navegação"><a class="nav-link active" href="#jogo">Jogar</a><a class="nav-link" href="#ranking">Ranking <span>↗</span></a></nav>
       <button class="icon-button" id="sound" aria-label="Ativar som" aria-pressed="false" title="Ativar som"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M11 4 6 8H3v8h3l5 4V4Z"/><path id="sound-waves" d="m16 9 5 6m0-6-5 6"/></svg></button>
     </header>
+
     <main>
       <div class="intro"><div><p class="eyebrow"><span class="status-dot"></span> O CLÁSSICO TÁ DE VOLTA</p><h1>Só mais uma maçã<span class="title-dot">.</span></h1></div><div class="intro-aside"><p>A nostalgia é sua.<br>O recorde pode ser também.</p><span class="mode-badge"><span>↔</span> Sem paredes. Sem desculpas.</span></div></div>
+
       <div class="play-layout">
         <section class="game-section" id="jogo" aria-label="Jogo da cobrinha">
           <div class="scorebar">
@@ -31,10 +34,12 @@
             <div class="level-item"><span class="level-indicator"></span><span id="level">Nível 01</span></div>
             <button class="pause-button" id="pause" disabled aria-label="Pausar partida" title="Pausar (espaço)"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="6" width="3" height="12" rx="1"/><rect x="14" y="6" width="3" height="12" rx="1"/></svg></button>
           </div>
+
           <div class="board-wrap" id="board-wrap">
             <canvas id="board" aria-label="Tabuleiro. Use as setas, WASD, os botões abaixo ou deslize o dedo para controlar a cobra." tabindex="0"></canvas>
             <span class="board-corner top-left"></span><span class="board-corner bottom-right"></span>
             <div class="apple-pop" id="apple-pop" aria-hidden="true">+10</div>
+
             <div class="overlay" id="overlay">
               <div class="welcome-panel" id="welcome-panel">
                 <div class="welcome-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M33 20c-7-6-23-1-23 14 0 15 10 23 17 20 4-2 6-2 10 0 7 3 17-5 17-20 0-15-15-20-21-14Z" fill="#f67665"/><path d="M32 18c0-9 2-12 5-14" fill="none" stroke="#d2c8b3" stroke-width="4" stroke-linecap="round"/><path d="M36 12C45 12 47 5 47 5S38 3 36 12" fill="#b8f268"/><path d="M19 29c-3 3-4 6-3 10" fill="none" stroke="#ffb3a6" stroke-width="3" stroke-linecap="round"/></svg></div>
@@ -48,14 +53,19 @@
                 </form>
                 <span class="welcome-foot">Maçã vale 10. O orgulho vale mais.</span>
               </div>
+
               <div class="pause-panel" id="pause-panel" hidden><div class="pause-symbol" aria-hidden="true">Ⅱ</div><span class="panel-eyebrow">RESPIRA. SUA COBRA ESPERA.</span><h2>Uma pausa rápida.</h2><p>Quando quiser, a disputa continua.</p><button class="play-button" id="resume"><span>Continuar</span><span aria-hidden="true">→</span></button></div>
+
               <div class="end-panel" id="end-panel" hidden><span class="result-tag" id="result-tag">FIM DE JOGO</span><h2 id="end-title">Foi por pouco.</h2><div class="end-score"><strong id="end-score">0</strong><span>pontos</span></div><div class="end-meta"><span id="end-apples">0 maçãs</span><span class="meta-dot">·</span><span id="end-time">00:00</span></div><p class="save-status" id="save-status" role="status">Salvando sua partida…</p><button class="retry-save" id="retry-save" hidden>Tentar salvar de novo ↻</button><button class="play-button" id="again"><span>Só mais uma</span><span aria-hidden="true">↗</span></button><button class="text-button" id="change-name">Trocar apelido</button></div>
+
               <div class="countdown-panel" id="countdown-panel" hidden><strong id="countdown-number">3</strong><span>VAI QUE É SUA.</span></div>
             </div>
           </div>
+
           <div class="game-bottom"><div class="player-chip"><span class="avatar-mini" id="player-avatar">?</span><span id="player-label">Sua vez de jogar</span><span class="connection-dot" id="connection-dot" title="Conectando ranking"></span></div><button class="text-button share-small" id="share">Chamar a galera <span>↗</span></button></div>
-          <div class="controls-row"><div class="control-hint"><p>Uma maçã por vez.</p><span class="desktop-hint">Setas ou <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> <span class="hint-divider">/</span> Espaço pausa</span><span class="mobile-hint">Deslize no jogo ou use as setas.</span></div><div class="dpad" aria-label="Controles direcionais"><button data-direction="3" class="dpad-up" aria-label="Mover para cima">↑</button><button data-direction="2" class="dpad-left" aria-label="Mover para esquerda">←</button><span class="dpad-center" aria-hidden="true">✦</span><button data-direction="0" class="dpad-right" aria-label="Mover para direita">→</button><button data-direction="1" class="dpad-down" aria-label="Mover para baixo">↓</button></div></div>
+          <div class="controls-row"><div class="swipe-pad" id="swipe-pad" aria-label="Área para deslizar o dedo e controlar a cobra"><span aria-hidden="true">↑ &nbsp; ↔ &nbsp; ↓</span><strong>Deslize aqui para virar</strong><small>Sem tampar o tabuleiro</small></div><div class="control-hint"><p>Uma maçã por vez.</p><span class="desktop-hint">Setas ou <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> <span class="hint-divider">/</span> Espaço pausa</span><span class="mobile-hint">Swipe aqui embaixo ou no tabuleiro.<br>As setas também funcionam.</span></div><div class="dpad" aria-label="Controles direcionais"><button data-direction="3" class="dpad-up" aria-label="Mover para cima">↑</button><button data-direction="2" class="dpad-left" aria-label="Mover para esquerda">←</button><span class="dpad-center" aria-hidden="true">✦</span><button data-direction="0" class="dpad-right" aria-label="Mover para direita">→</button><button data-direction="1" class="dpad-down" aria-label="Mover para baixo">↓</button></div></div>
         </section>
+
         <aside class="side-column">
           <section class="ranking-card" id="ranking" aria-labelledby="ranking-title"><div class="ranking-heading"><div><p class="eyebrow">DÁ PRA PASSAR?</p><h2 id="ranking-title">O topo é de quem?</h2></div><div class="trophy-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8v7a4 4 0 0 1-8 0V3ZM8 5H4v3c0 3 2 4 4 4M16 5h4v3c0 3-2 4-4 4M12 14v6m-4 1h8"/></svg></div></div>
             <div class="ranking-tabs" role="group" aria-label="Período do ranking"><button id="tab-all" class="selected" aria-pressed="true">Geral</button><button id="tab-week" aria-pressed="false">Esta semana</button></div>
